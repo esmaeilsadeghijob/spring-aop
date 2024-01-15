@@ -16,13 +16,13 @@ public class AppLogging {
     
     private static Logger log = LoggerFactory.getLogger(AppLogging.class);
 
-    @Before(value = "execution(* com.javatar.aop.service.EmployeeService.*(..)) and args(employee)")
+    @Before(value = "execution(* com.javatar.aop.service.EmployeeService.*(..)) && args(employee)")
     public void beforeAdvice(JoinPoint joinPoint, Employee employee){
         log.info("Before method: " + joinPoint.getSignature());
         log.info("" + employee.getEmpId() + employee.getName());
     }
 
-    @After(value = "execution(* com.javatar.aop.service.EmployeeService.*(..)) and args(employee) ")
+    @After(value = "execution(* com.javatar.aop.service.EmployeeService.*(..)) && args(employee) ")
     public void afterAdvice(JoinPoint joinPoint, Employee employee){
         log.info("after method: " + joinPoint.getSignature());
         log.info("successfully " + employee.getEmpId() + employee.getName());
@@ -37,7 +37,7 @@ public class AppLogging {
     }
 
     //    @Around("logApp()")
-    @Around("execution(public * com.javatar.aop.service.*.*(..)) && com.javatar.aop.aop.Log")
+    @Around("execution(public * com.javatar.aop.service.*.*(..)) && @annotation(com.javatar.aop.aop.Log)")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         log.info(String.format("Method %s going to call from class %s",
                 joinPoint.getSignature().toString(),
